@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Chain ER Diagram</title>
+    <!-- Load Mermaid.js to render the flowchart -->
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f4f4f9; display: flex; justify-content: center; }
+        .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Hotel Chain Management - Entity Relationship Diagram</h2>
+        <pre class="mermaid">
+            erDiagram
+                HOTEL ||--|{ ROOM : "contains (Identifying)"
+                HOTEL ||--o{ EMPLOYEE : "employs"
+                
+                %% Specialization Hierarchy
+                EMPLOYEE ||--o| MANAGER : "is a"
+                EMPLOYEE ||--o| RECEPTIONIST : "is a"
+                
+                GUEST ||--o{ RESERVATION : "makes"
+                ROOM ||--o{ RESERVATION : "is booked for"
+                
+                %% Associative Resolution
+                RESERVATION ||--o{ SERVICE_USAGE : "incurs"
+                SERVICE ||--o{ SERVICE_USAGE : "provided in"
+
+                HOTEL {
+                    int Hotel_ID PK
+                    string Name
+                    string Address
+                    string Phone
+                }
+
+                ROOM {
+                    int Room_Number PK "Partial Key"
+                    int Hotel_ID PK,FK
+                    string Room_Type
+                    decimal PricePerNight
+                }
+
+                GUEST {
+                    int Guest_ID PK
+                    string FirstName
+                    string LastName
+                    string Email
+                }
+
+                EMPLOYEE {
+                    int Emp_ID PK
+                    int Hotel_ID FK
+                    string FirstName
+                    string LastName
+                }
+
+                MANAGER {
+                    int Emp_ID PK,FK
+                    string BonusLevel
+                }
+
+                RECEPTIONIST {
+                    int Emp_ID PK,FK
+                    string ShiftPreference
+                }
+
+                RESERVATION {
+                    int Res_ID PK
+                    int Guest_ID FK
+                    int Hotel_ID FK
+                    int Room_Number FK
+                    date CheckIn_Date
+                    date CheckOut_Date
+                }
+
+                SERVICE {
+                    int Service_ID PK
+                    string ServiceName
+                    decimal Cost
+                }
+
+                SERVICE_USAGE {
+                    int Usage_ID PK
+                    int Res_ID FK
+                    int Service_ID FK
+                    date UsageDate
+                    int Quantity
+                }
+        </pre>
+    </div>
+</body>
+</html>
